@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="FortressPass - Advanced Password Strength & Vulnerability Intelligence Dashboard. Highly secure, real-time breach check, entropy analysis, and cyber-generator.">
+    <meta name="theme-color" content="#0a0a0f">
+    <title>FortressPass // Password Intelligence Dashboard</title>
+    <!-- Modern Premium Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Canvas overlays for advanced micro-animations and physics confetti -->
+    <canvas id="cyber-particles-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 0;"></canvas>
+    <canvas id="confetti-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 10000;"></canvas>
+
+    <!-- Abstract Tech Background Elements -->
+    <div class="tech-grid-overlay"></div>
+    <div class="glow-orb orb-cyan"></div>
+    <div class="glow-orb orb-indigo"></div>
+    
+    <div class="app-container">
+        <!-- HEADER -->
+        <header class="header-hud">
+            <div class="logo-area">
+                <svg class="logo-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L3 7V12C3 17.5 7 21 12 22C17 21 21 17.5 21 12V7L12 2Z" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12 11V15" stroke="url(#logo-grad)" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="12" cy="8" r="1" fill="#00f2fe"/>
+                    <defs>
+                        <linearGradient id="logo-grad" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
+                            <stop stop-color="#00f2fe"/>
+                            <stop offset="1" stop-color="#4facfe"/>
+                        </linearGradient>
+                    </defs>
+                </svg>
+                <div class="logo-text">
+                    <h1>Fortress<span>Pass</span></h1>
+                    <span class="logo-sub">SECURE INTELLIGENCE OS</span>
+                </div>
+            </div>
+            <div class="system-status-hud">
+                <span class="hud-ping"></span>
+                <span class="status-lbl">SYSTEM SECURE // LOCAL</span>
+            </div>
+        </header>
+
+        <!-- MAIN LAYOUT -->
+        <main class="dashboard-grid">
+            
+            <!-- LEFT SECTION: ANALYZER & MATRIX -->
+            <section class="grid-card analyzer-card glass-panel" id="analyzer-section">
+                <div class="card-header">
+                    <div class="header-title-block">
+                        <span class="header-tag">01 // MAIN MODULE</span>
+                        <h2>Real-Time Password Scanner</h2>
+                    </div>
+                    <div class="cyber-decor-lines">
+                        <span></span><span></span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="scanner-input-container">
+                        <div class="input-wrapper">
+                            <input type="password" id="password-input" autocomplete="off" placeholder="Analyze a password..." spellcheck="false">
+                            <button type="button" id="toggle-password-btn" aria-label="Toggle password visibility" class="action-btn">
+                                <svg class="eye-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                <svg class="eye-closed-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- CHARACTER MATRIX LIST -->
+                    <div class="matrix-container">
+                        <h3>Vulnerability Character Matrix</h3>
+                        <div class="matrix-grid">
+                            <div class="matrix-badge" id="matrix-length" data-requirement="8+ chars">
+                                <div class="badge-status-icon"></div>
+                                <span class="badge-lbl">Minimum Length</span>
+                                <span class="badge-value">0 / 8</span>
+                            </div>
+                            <div class="matrix-badge" id="matrix-upper" data-requirement="uppercase">
+                                <div class="badge-status-icon"></div>
+                                <span class="badge-lbl">Uppercase</span>
+                                <span class="badge-value">None</span>
+                            </div>
+                            <div class="matrix-badge" id="matrix-lower" data-requirement="lowercase">
+                                <div class="badge-status-icon"></div>
+                                <span class="badge-lbl">Lowercase</span>
+                                <span class="badge-value">None</span>
+                            </div>
+                            <div class="matrix-badge" id="matrix-number" data-requirement="number">
+                                <div class="badge-status-icon"></div>
+                                <span class="badge-lbl">Numeric Digits</span>
+                                <span class="badge-value">None</span>
+                            </div>
+                            <div class="matrix-badge" id="matrix-symbol" data-requirement="special">
+                                <div class="badge-status-icon"></div>
+                                <span class="badge-lbl">Special Symbols</span>
+                                <span class="badge-value">None</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RIGHT SECTION: ENTROPY GAUGE & COMPROMISE MODULE -->
+            <section class="grid-card intelligence-card glass-panel" id="intelligence-section">
+                <div class="card-header">
+                    <div class="header-title-block">
+                        <span class="header-tag">02 // CRYPTOGRAPHIC CORE</span>
+                        <h2>Strength & Breach Analytics</h2>
+                    </div>
+                </div>
+                <div class="card-body gauge-split-layout">
+                    <!-- CIRCULAR GAUGE -->
+                    <div class="circular-gauge-container">
+                        <div class="gauge-svg-wrapper">
+                            <svg class="radial-gauge" viewBox="0 0 100 100">
+                                <circle class="gauge-bg" cx="50" cy="50" r="42" />
+                                <circle class="gauge-fill" cx="50" cy="50" r="42" stroke-dasharray="263.8" stroke-dashoffset="263.8" />
+                            </svg>
+                            <div class="gauge-center-content">
+                                <span class="entropy-label">ENTROPY</span>
+                                <span class="entropy-val" id="entropy-value">0.0</span>
+                                <span class="entropy-unit">BITS</span>
+                            </div>
+                        </div>
+                        <div class="strength-grade-hud">
+                            <span class="grade-title">SECURITY RATING</span>
+                            <h3 class="grade-label" id="security-grade">EMPTY INPUT</h3>
+                        </div>
+                    </div>
+
+                    <!-- DATA LEAK CONSOLE -->
+                    <div class="leak-console glass-inset">
+                        <div class="console-hud">
+                            <div class="hud-indicator" id="leak-indicator"></div>
+                            <h4>Breach Data Center</h4>
+                        </div>
+                        <div class="console-display" id="leak-display-box">
+                            <div class="console-line system-line">FortressPass online. Standing by for input analysis...</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DETAILS ROW: CRACK TIME SIMULATOR & ARCHITECT -->
+            <section class="grid-card simulator-card glass-panel" id="simulator-section">
+                <div class="card-header">
+                    <div class="header-title-block">
+                        <span class="header-tag">03 // COMPUTATIONAL SIMULATOR</span>
+                        <h2>Brute-Force Attack Vectors</h2>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="vector-table">
+                            <thead>
+                                <tr>
+                                    <th>Threat Level</th>
+                                    <th>Vector Device</th>
+                                    <th>Est. Guess Speed</th>
+                                    <th>Time-To-Crack</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="vector-phone" class="vector-row">
+                                    <td><span class="threat-dot level-safe"></span>Low</td>
+                                    <td class="vector-name">Standard Smartphone</td>
+                                    <td class="vector-speed">1.0 × 10<sup>4</sup> /s</td>
+                                    <td class="vector-time" id="time-phone">Instant</td>
+                                </tr>
+                                <tr id="vector-rig" class="vector-row">
+                                    <td><span class="threat-dot level-warn"></span>Medium</td>
+                                    <td class="vector-name">Fast GPU Crack Rig (8x RTX 4090)</td>
+                                    <td class="vector-speed">3.5 × 10<sup>9</sup> /s</td>
+                                    <td class="vector-time" id="time-rig">Instant</td>
+                                </tr>
+                                <tr id="vector-super" class="vector-row">
+                                    <td><span class="threat-dot level-danger"></span>High</td>
+                                    <td class="vector-name">Enterprise/Government Supercomputer</td>
+                                    <td class="vector-speed">1.0 × 10<sup>12</sup> /s</td>
+                                    <td class="vector-time" id="time-super">Instant</td>
+                                </tr>
+                                <tr id="vector-quantum" class="vector-row">
+                                    <td><span class="threat-dot level-critical"></span>Quantum</td>
+                                    <td class="vector-name">Quantum Cryptanalysis Rig</td>
+                                    <td class="vector-speed">N/A (Shor's Algorithm)</td>
+                                    <td class="vector-time" id="time-quantum">Instant</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PASSWORD GENERATOR -->
+            <section class="grid-card generator-card glass-panel" id="generator-section">
+                <div class="card-header">
+                    <div class="header-title-block">
+                        <span class="header-tag">04 // CREATIVE ARCHITECT</span>
+                        <h2>Advanced Password Architect</h2>
+                    </div>
+                    <div class="architect-tabs">
+                        <button class="tab-btn active" id="tab-char">COMPLEX CHARS</button>
+                        <button class="tab-btn" id="tab-phrase">CYBER PASSPHRASE</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="generator-output-hud">
+                        <div class="generated-wrapper" id="generated-string-display">
+                            Generating secure token...
+                        </div>
+                        <button class="copy-btn action-btn" id="copy-btn" aria-label="Copy generated password">
+                            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                            <span class="copy-tooltip">COPY</span>
+                        </button>
+                    </div>
+
+                    <div class="generator-controls-grid">
+                        <div class="control-row full-width">
+                            <div class="slider-header">
+                                <span>Entropy Length: <strong id="slider-length-val">16</strong> chars</span>
+                            </div>
+                            <input type="range" id="length-slider" min="8" max="64" value="16">
+                        </div>
+
+                        <!-- CHARACTER CONTROLS -->
+                        <div class="character-toggles-grid" id="char-controls-group">
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-upper" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Uppercase (A-Z)</span>
+                            </label>
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-lower" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Lowercase (a-z)</span>
+                            </label>
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-numbers" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Numbers (0-9)</span>
+                            </label>
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-symbols" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Special Symbols</span>
+                            </label>
+                        </div>
+
+                        <!-- PASSPHRASE CONTROLS -->
+                        <div class="passphrase-toggles-grid hidden" id="phrase-controls-group">
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-sep" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Dash Separator (-)</span>
+                            </label>
+                            <label class="switch-container">
+                                <input type="checkbox" id="gen-cap" checked>
+                                <span class="switch-slider"></span>
+                                <span class="switch-lbl">Title Case Words</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="generate-trigger-btn" id="generate-trigger">
+                        <span>RE-ARCHITECT SYSTEM ACCESS TOKEN</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                    </button>
+                </div>
+            </section>
+
+            <!-- SESSION AUDIT LOG -->
+            <section class="grid-card audit-card glass-panel" id="audit-section">
+                <div class="card-header">
+                    <div class="header-title-block">
+                        <span class="header-tag">05 // SECURE SESSION REGISTER</span>
+                        <h2>Local Audit Log</h2>
+                    </div>
+                    <button class="clear-btn" id="clear-audit-btn">CLEAR MEMORY</button>
+                </div>
+                <div class="card-body">
+                    <div class="audit-list" id="audit-list-box">
+                        <div class="audit-empty">No active security records checked in this session.</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- FOOTER -->
+        <footer class="footer-hud">
+            <div class="footer-info">
+                <span>FortressPass Security OS v1.0.0</span>
+                <span class="divider">|</span>
+                <span>Designed for Premium Cryptographic Verification</span>
+            </div>
+            <div class="footer-links">
+                <span>MIT LICENSE</span>
+                <span class="divider">|</span>
+                <span>ZERO KNOWLEDGE ARCHITECTURE</span>
+            </div>
+        </footer>
+    </div>
+
+    <!-- HUD FLOAT NOTIFICATIONS -->
+    <div class="hud-alerts-container" id="hud-alerts-box"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
