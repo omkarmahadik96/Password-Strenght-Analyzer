@@ -2528,8 +2528,14 @@ input[type="range"]::-webkit-slider-thumb:hover {
     }
 }
 
-
-
-
-
-
+@media (max-width: 480px) {
+    .hud-nav-menu {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+    }
+    .nav-tab {
+        font-size: 0.6rem;
+        padding: 6px 8px;
+    }
+}
