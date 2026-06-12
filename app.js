@@ -430,6 +430,13 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------------------------
     // CLIENT HASH ENGINES
     // ----------------------------------------------------------------------
+    /**
+     * Calculates the SHA-1 hash of a given string and returns it in uppercase hexadecimal format.
+     * Uses the browser's native Web Crypto API for secure and high-performance hashing.
+     * 
+     * @param {string} str - The raw password or string to hash.
+     * @returns {Promise<string>} The SHA-1 hex hash in uppercase.
+     */
     async function sha1Hex(str) {
         const buffer = new TextEncoder().encode(str);
         const hashBuffer = await window.crypto.subtle.digest("SHA-1", buffer);
@@ -440,6 +447,14 @@ document.addEventListener("DOMContentLoaded", () => {
     // ----------------------------------------------------------------------
     // SECURE K-ANONYMITY DATAPORT
     // ----------------------------------------------------------------------
+    /**
+     * Queries the Have I Been Pwned API securely using the k-Anonymity privacy model.
+     * The plain-text password is never sent to the network. Instead, the first 5 characters
+     * of its SHA-1 hash are queried, and suffix verification is performed locally.
+     * 
+     * @param {string} password - The password string to check against the HIBP database.
+     * @returns {Promise<void>}
+     */
     async function checkPasswordBreach(password) {
         if (!password || password.length < 3) {
             leakIndicator.className = "hud-indicator";
