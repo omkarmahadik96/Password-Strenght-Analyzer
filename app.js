@@ -1183,8 +1183,12 @@ document.addEventListener("DOMContentLoaded", () => {
         tab.addEventListener("click", () => {
             const targetViewId = tab.getAttribute("data-view");
             
-            navTabs.forEach(t => t.classList.remove("active"));
+            navTabs.forEach(t => {
+                t.classList.remove("active");
+                t.setAttribute("aria-selected", "false");
+            });
             tab.classList.add("active");
+            tab.setAttribute("aria-selected", "true");
             
             viewSections.forEach(section => {
                 if (section.id === targetViewId) {
