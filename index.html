@@ -7,10 +7,12 @@
     <meta name="theme-color" content="#0a0a0f">
     <title>FortressPass // Password Intelligence Dashboard</title>
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-    <!-- Modern Premium Typography -->
+    <!-- Modern Premium Typography & Cyber Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Three.js CDN for immersive 3D hologram visualization -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -43,6 +45,15 @@
                     <span class="logo-sub">SECURE INTELLIGENCE OS</span>
                 </div>
             </div>
+
+            <!-- SPA NAVIGATION MENU -->
+            <nav class="hud-nav-menu">
+                <button type="button" class="nav-tab active" data-view="view-scanner">[ 🛡️ SCANNER ]</button>
+                <button type="button" class="nav-tab" data-view="view-cracking">[ ⚡ ATTACK LAB ]</button>
+                <button type="button" class="nav-tab" data-view="view-biometrics">[ 📊 BIOMETRICS ]</button>
+                <button type="button" class="nav-tab" data-view="view-dictionary">[ 📚 LEDGER ]</button>
+            </nav>
+
             <div class="system-status-hud">
                 <span class="hud-ping"></span>
                 <span class="status-lbl">SYSTEM SECURE // LOCAL</span>
@@ -50,247 +61,631 @@
         </header>
 
         <!-- MAIN LAYOUT -->
-        <main class="dashboard-grid">
+        <main class="dashboard-viewport">
             
-            <!-- LEFT SECTION: ANALYZER & MATRIX -->
-            <section class="grid-card analyzer-card glass-panel" id="analyzer-section">
-                <div class="card-header">
-                    <div class="header-title-block">
-                        <span class="header-tag">01 // MAIN MODULE</span>
-                        <h2>Real-Time Password Scanner</h2>
+            <!-- VIEW 1: SCANNER & ARCHITECT (DEFAULT VIEW) -->
+            <div id="view-scanner" class="view-section active dashboard-grid">
+                
+                <!-- LEFT SECTION: ANALYZER & MATRIX -->
+                <section class="grid-card analyzer-card glass-panel" id="analyzer-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">01 // MAIN MODULE</span>
+                            <h2>Real-Time Password Scanner</h2>
+                        </div>
+                        <div class="cyber-decor-lines">
+                            <span></span><span></span>
+                        </div>
                     </div>
-                    <div class="cyber-decor-lines">
-                        <span></span><span></span>
+                    <div class="card-body">
+                        <div class="scanner-input-container">
+                            <div class="input-wrapper">
+                                <input type="password" id="password-input" autocomplete="off" placeholder="Analyze a password..." spellcheck="false">
+                                <button type="button" id="toggle-password-btn" aria-label="Toggle password visibility" class="action-btn">
+                                    <svg class="eye-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    <svg class="eye-closed-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- CHARACTER MATRIX LIST -->
+                        <div class="matrix-container">
+                            <h3>Vulnerability Character Matrix</h3>
+                            <div class="matrix-grid">
+                                <div class="matrix-badge" id="matrix-length" data-requirement="8+ chars">
+                                    <div class="badge-status-icon"></div>
+                                    <span class="badge-lbl">Minimum Length</span>
+                                    <span class="badge-value">0 / 8</span>
+                                </div>
+                                <div class="matrix-badge" id="matrix-upper" data-requirement="uppercase">
+                                    <div class="badge-status-icon"></div>
+                                    <span class="badge-lbl">Uppercase</span>
+                                    <span class="badge-value">None</span>
+                                </div>
+                                <div class="matrix-badge" id="matrix-lower" data-requirement="lowercase">
+                                    <div class="badge-status-icon"></div>
+                                    <span class="badge-lbl">Lowercase</span>
+                                    <span class="badge-value">None</span>
+                                </div>
+                                <div class="matrix-badge" id="matrix-number" data-requirement="number">
+                                    <div class="badge-status-icon"></div>
+                                    <span class="badge-lbl">Numeric Digits</span>
+                                    <span class="badge-value">None</span>
+                                </div>
+                                <div class="matrix-badge" id="matrix-symbol" data-requirement="special">
+                                    <div class="badge-status-icon"></div>
+                                    <span class="badge-lbl">Special Symbols</span>
+                                    <span class="badge-value">None</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CRYPTOGRAPHIC PATTERN INSPECTOR -->
+                        <div class="pattern-inspector-container">
+                            <h3>Cryptographic Pattern Intel</h3>
+                            <div class="pattern-list" id="pattern-list-box">
+                                <div class="pattern-empty">No dangerous keyboard walks, sequences, or repeating patterns detected.</div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="card-body">
-                    <div class="scanner-input-container">
-                        <div class="input-wrapper">
-                            <input type="password" id="password-input" autocomplete="off" placeholder="Analyze a password..." spellcheck="false">
-                            <button type="button" id="toggle-password-btn" aria-label="Toggle password visibility" class="action-btn">
-                                <svg class="eye-open-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                                <svg class="eye-closed-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </section>
+
+                <!-- RIGHT SECTION: ENTROPY GAUGE & COMPROMISE MODULE -->
+                <section class="grid-card intelligence-card glass-panel" id="intelligence-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">02 // CRYPTOGRAPHIC CORE</span>
+                            <h2>Strength & Breach Analytics</h2>
+                        </div>
+                    </div>
+                    <div class="card-body gauge-split-layout">
+                        <!-- CIRCULAR GAUGE (3D & 2D DUAL VIEWPORTS) -->
+                        <div class="circular-gauge-container">
+                            <div class="visualizer-viewport-wrapper">
+                                <!-- 3D WebGL Viewport -->
+                                <div id="threejs-container" class="gauge-threejs-viewport"></div>
+
+                                <!-- 2D SVG Fallback Viewport -->
+                                <div id="svg-container" class="gauge-svg-viewport hidden">
+                                    <svg class="radial-gauge" viewBox="0 0 100 100">
+                                        <circle class="gauge-bg" cx="50" cy="50" r="42" />
+                                        <circle class="gauge-fill" cx="50" cy="50" r="42" stroke-dasharray="263.8" stroke-dashoffset="263.8" />
+                                    </svg>
+                                </div>
+
+                                <!-- Centered Text Overlays -->
+                                <div class="gauge-center-content">
+                                    <span class="entropy-label">ENTROPY</span>
+                                    <span class="entropy-val" id="entropy-value">0.0</span>
+                                    <span class="entropy-unit">BITS</span>
+                                </div>
+                            </div>
+
+                            <div class="strength-grade-hud">
+                                <span class="grade-title">SECURITY RATING</span>
+                                <h3 class="grade-label" id="security-grade">EMPTY INPUT</h3>
+                                <button type="button" id="toggle-3d-btn" class="toggle-3d-btn" aria-label="Toggle 3D View">3D ENGINE ACTIVE</button>
+                            </div>
+                        </div>
+
+                        <!-- DATA LEAK CONSOLE -->
+                        <div class="leak-console glass-inset">
+                            <div class="console-hud">
+                                <div class="hud-indicator" id="leak-indicator"></div>
+                                <h4>Breach Data Center</h4>
+                            </div>
+                            <div class="console-display" id="leak-display-box">
+                                <div class="console-line system-line">FortressPass online. Standing by for input analysis...</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DETAILS ROW: CRACK TIME SIMULATOR & ARCHITECT -->
+                <section class="grid-card simulator-card glass-panel" id="simulator-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">03 // COMPUTATIONAL SIMULATOR</span>
+                            <h2>Brute-Force & Identity Exploits</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="vector-table">
+                                <thead>
+                                    <tr>
+                                        <th>Threat Level</th>
+                                        <th>Vector Device</th>
+                                        <th>Est. Guess Speed</th>
+                                        <th>Time-To-Crack</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr id="vector-phone" class="vector-row">
+                                        <td><span class="threat-dot level-safe"></span>Low</td>
+                                        <td class="vector-name">Standard Smartphone</td>
+                                        <td class="vector-speed">1.0 × 10<sup>4</sup> /s</td>
+                                        <td class="vector-time" id="time-phone">Instant</td>
+                                    </tr>
+                                    <tr id="vector-rig" class="vector-row">
+                                        <td><span class="threat-dot level-warn"></span>Medium</td>
+                                        <td class="vector-name">Fast GPU Crack Rig (8x RTX 4090)</td>
+                                        <td class="vector-speed">3.5 × 10<sup>9</sup> /s</td>
+                                        <td class="vector-time" id="time-rig">Instant</td>
+                                    </tr>
+                                    <tr id="vector-super" class="vector-row">
+                                        <td><span class="threat-dot level-danger"></span>High</td>
+                                        <td class="vector-name">Enterprise/Government Supercomputer</td>
+                                        <td class="vector-speed">1.0 × 10<sup>12</sup> /s</td>
+                                        <td class="vector-time" id="time-super">Instant</td>
+                                    </tr>
+                                    <tr id="vector-quantum" class="vector-row">
+                                        <td><span class="threat-dot level-critical"></span>Quantum</td>
+                                        <td class="vector-name">Quantum Cryptanalysis Rig</td>
+                                        <td class="vector-speed">N/A (Shor's Algorithm)</td>
+                                        <td class="vector-time" id="time-quantum">Instant</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PASSWORD GENERATOR -->
+                <section class="grid-card generator-card glass-panel" id="generator-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">04 // CREATIVE ARCHITECT</span>
+                            <h2>Advanced Password Architect</h2>
+                        </div>
+                        <div class="architect-tabs">
+                            <button class="tab-btn active" id="tab-char">COMPLEX CHARS</button>
+                            <button class="tab-btn" id="tab-phrase">CYBER PASSPHRASE</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="generator-output-hud">
+                            <div class="generated-wrapper" id="generated-string-display">
+                                Generating secure token...
+                            </div>
+                            <button class="copy-btn action-btn" id="copy-btn" aria-label="Copy generated password">
+                                <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                <span class="copy-tooltip">COPY</span>
                             </button>
                         </div>
-                    </div>
 
-                    <!-- CHARACTER MATRIX LIST -->
-                    <div class="matrix-container">
-                        <h3>Vulnerability Character Matrix</h3>
-                        <div class="matrix-grid">
-                            <div class="matrix-badge" id="matrix-length" data-requirement="8+ chars">
-                                <div class="badge-status-icon"></div>
-                                <span class="badge-lbl">Minimum Length</span>
-                                <span class="badge-value">0 / 8</span>
+                        <div class="generator-controls-grid">
+                            <div class="control-row full-width">
+                                <div class="slider-header">
+                                    <span>Entropy Length: <strong id="slider-length-val">16</strong> chars</span>
+                                </div>
+                                <input type="range" id="length-slider" min="8" max="64" value="16">
                             </div>
-                            <div class="matrix-badge" id="matrix-upper" data-requirement="uppercase">
-                                <div class="badge-status-icon"></div>
-                                <span class="badge-lbl">Uppercase</span>
-                                <span class="badge-value">None</span>
-                            </div>
-                            <div class="matrix-badge" id="matrix-lower" data-requirement="lowercase">
-                                <div class="badge-status-icon"></div>
-                                <span class="badge-lbl">Lowercase</span>
-                                <span class="badge-value">None</span>
-                            </div>
-                            <div class="matrix-badge" id="matrix-number" data-requirement="number">
-                                <div class="badge-status-icon"></div>
-                                <span class="badge-lbl">Numeric Digits</span>
-                                <span class="badge-value">None</span>
-                            </div>
-                            <div class="matrix-badge" id="matrix-symbol" data-requirement="special">
-                                <div class="badge-status-icon"></div>
-                                <span class="badge-lbl">Special Symbols</span>
-                                <span class="badge-value">None</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
 
-            <!-- RIGHT SECTION: ENTROPY GAUGE & COMPROMISE MODULE -->
-            <section class="grid-card intelligence-card glass-panel" id="intelligence-section">
-                <div class="card-header">
-                    <div class="header-title-block">
-                        <span class="header-tag">02 // CRYPTOGRAPHIC CORE</span>
-                        <h2>Strength & Breach Analytics</h2>
-                    </div>
-                </div>
-                <div class="card-body gauge-split-layout">
-                    <!-- CIRCULAR GAUGE -->
-                    <div class="circular-gauge-container">
-                        <div class="gauge-svg-wrapper">
-                            <svg class="radial-gauge" viewBox="0 0 100 100">
-                                <circle class="gauge-bg" cx="50" cy="50" r="42" />
-                                <circle class="gauge-fill" cx="50" cy="50" r="42" stroke-dasharray="263.8" stroke-dashoffset="263.8" />
-                            </svg>
-                            <div class="gauge-center-content">
-                                <span class="entropy-label">ENTROPY</span>
-                                <span class="entropy-val" id="entropy-value">0.0</span>
-                                <span class="entropy-unit">BITS</span>
+                            <!-- CHARACTER CONTROLS -->
+                            <div class="character-toggles-grid" id="char-controls-group">
+                                <div class="cyber-toggle-cell" data-target="gen-upper">
+                                    <input type="checkbox" id="gen-upper" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">SEC // A-Z</span>
+                                        <span class="cell-title">UPPERCASE</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
+                                <div class="cyber-toggle-cell" data-target="gen-lower">
+                                    <input type="checkbox" id="gen-lower" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">SEC // a-z</span>
+                                        <span class="cell-title">LOWERCASE</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
+                                <div class="cyber-toggle-cell" data-target="gen-numbers">
+                                    <input type="checkbox" id="gen-numbers" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">NUM // 0-9</span>
+                                        <span class="cell-title">NUMBERS</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
+                                <div class="cyber-toggle-cell" data-target="gen-symbols">
+                                    <input type="checkbox" id="gen-symbols" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">SYM // #%!</span>
+                                        <span class="cell-title">SPECIAL CHARS</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- PASSPHRASE CONTROLS -->
+                            <div class="passphrase-toggles-grid hidden" id="phrase-controls-group">
+                                <div class="cyber-toggle-cell" data-target="gen-sep">
+                                    <input type="checkbox" id="gen-sep" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">SEP // dash</span>
+                                        <span class="cell-title">HYPHENATOR</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
+                                <div class="cyber-toggle-cell" data-target="gen-cap">
+                                    <input type="checkbox" id="gen-cap" class="hidden-toggle" checked>
+                                    <div class="cell-status-bar"></div>
+                                    <div class="cell-body">
+                                        <span class="cell-code">TXT // Title</span>
+                                        <span class="cell-title">TITLE CASE</span>
+                                    </div>
+                                    <div class="cell-indicator">
+                                        <span class="indicator-led"></span>
+                                        <span class="indicator-text">ACTIVE</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="strength-grade-hud">
-                            <span class="grade-title">SECURITY RATING</span>
-                            <h3 class="grade-label" id="security-grade">EMPTY INPUT</h3>
-                        </div>
-                    </div>
 
-                    <!-- DATA LEAK CONSOLE -->
-                    <div class="leak-console glass-inset">
-                        <div class="console-hud">
-                            <div class="hud-indicator" id="leak-indicator"></div>
-                            <h4>Breach Data Center</h4>
-                        </div>
-                        <div class="console-display" id="leak-display-box">
-                            <div class="console-line system-line">FortressPass online. Standing by for input analysis...</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- DETAILS ROW: CRACK TIME SIMULATOR & ARCHITECT -->
-            <section class="grid-card simulator-card glass-panel" id="simulator-section">
-                <div class="card-header">
-                    <div class="header-title-block">
-                        <span class="header-tag">03 // COMPUTATIONAL SIMULATOR</span>
-                        <h2>Brute-Force Attack Vectors</h2>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="vector-table">
-                            <thead>
-                                <tr>
-                                    <th>Threat Level</th>
-                                    <th>Vector Device</th>
-                                    <th>Est. Guess Speed</th>
-                                    <th>Time-To-Crack</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr id="vector-phone" class="vector-row">
-                                    <td><span class="threat-dot level-safe"></span>Low</td>
-                                    <td class="vector-name">Standard Smartphone</td>
-                                    <td class="vector-speed">1.0 × 10<sup>4</sup> /s</td>
-                                    <td class="vector-time" id="time-phone">Instant</td>
-                                </tr>
-                                <tr id="vector-rig" class="vector-row">
-                                    <td><span class="threat-dot level-warn"></span>Medium</td>
-                                    <td class="vector-name">Fast GPU Crack Rig (8x RTX 4090)</td>
-                                    <td class="vector-speed">3.5 × 10<sup>9</sup> /s</td>
-                                    <td class="vector-time" id="time-rig">Instant</td>
-                                </tr>
-                                <tr id="vector-super" class="vector-row">
-                                    <td><span class="threat-dot level-danger"></span>High</td>
-                                    <td class="vector-name">Enterprise/Government Supercomputer</td>
-                                    <td class="vector-speed">1.0 × 10<sup>12</sup> /s</td>
-                                    <td class="vector-time" id="time-super">Instant</td>
-                                </tr>
-                                <tr id="vector-quantum" class="vector-row">
-                                    <td><span class="threat-dot level-critical"></span>Quantum</td>
-                                    <td class="vector-name">Quantum Cryptanalysis Rig</td>
-                                    <td class="vector-speed">N/A (Shor's Algorithm)</td>
-                                    <td class="vector-time" id="time-quantum">Instant</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <!-- PASSWORD GENERATOR -->
-            <section class="grid-card generator-card glass-panel" id="generator-section">
-                <div class="card-header">
-                    <div class="header-title-block">
-                        <span class="header-tag">04 // CREATIVE ARCHITECT</span>
-                        <h2>Advanced Password Architect</h2>
-                    </div>
-                    <div class="architect-tabs">
-                        <button class="tab-btn active" id="tab-char">COMPLEX CHARS</button>
-                        <button class="tab-btn" id="tab-phrase">CYBER PASSPHRASE</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="generator-output-hud">
-                        <div class="generated-wrapper" id="generated-string-display">
-                            Generating secure token...
-                        </div>
-                        <button class="copy-btn action-btn" id="copy-btn" aria-label="Copy generated password">
-                            <svg class="copy-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                            <span class="copy-tooltip">COPY</span>
+                        <button class="generate-trigger-btn" id="generate-trigger">
+                            <span>RE-ARCHITECT SYSTEM ACCESS TOKEN</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
                         </button>
                     </div>
+                </section>
 
-                    <div class="generator-controls-grid">
-                        <div class="control-row full-width">
-                            <div class="slider-header">
-                                <span>Entropy Length: <strong id="slider-length-val">16</strong> chars</span>
+                <!-- SESSION AUDIT LOG -->
+                <section class="grid-card audit-card glass-panel" id="audit-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">05 // SECURE SESSION REGISTER</span>
+                            <h2>Local Audit Log</h2>
+                        </div>
+                        <button class="clear-btn" id="clear-audit-btn">CLEAR MEMORY</button>
+                    </div>
+                    <div class="card-body">
+                        <div class="audit-list" id="audit-list-box">
+                            <div class="audit-empty">No active security records checked in this session.</div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VIEW 2: CRACKING LAB (WEB WORKER POWERED SIMULATOR) -->
+            <div id="view-cracking" class="view-section hidden dashboard-grid">
+                
+                <!-- Left panel: Matrix visualizer console -->
+                <section class="grid-card cracking-console-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // ATTACK SIMULATION</span>
+                            <h2>Active Brute-Force Visualizer</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Canvas for running glyph code matrices -->
+                        <div class="matrix-canvas-wrapper">
+                            <canvas id="cracking-canvas" class="cracking-canvas"></canvas>
+                            <div class="cracking-progress-overlay">
+                                <span class="crack-status-lbl" id="crack-status-lbl">STATUS: STANDBY</span>
+                                <h3 class="crack-current-guess" id="crack-current-guess">MASK: • • • • • • • •</h3>
+                                <div class="crack-bar-container">
+                                    <div class="crack-bar-fill" id="crack-progress-bar" style="width: 0%"></div>
+                                </div>
+                                <span class="crack-pct-val" id="crack-progress-pct">0.00% SYNCED</span>
+                                <div class="thread-matrix-container">
+                                    <span class="thread-matrix-lbl">ACTIVE THREAD INTEGRITY:</span>
+                                    <div class="thread-grid" id="thread-core-grid">
+                                        <!-- JS will render active thread blocks here dynamically -->
+                                    </div>
+                                </div>
                             </div>
-                            <input type="range" id="length-slider" min="8" max="64" value="16">
-                        </div>
-
-                        <!-- CHARACTER CONTROLS -->
-                        <div class="character-toggles-grid" id="char-controls-group">
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-upper" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Uppercase (A-Z)</span>
-                            </label>
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-lower" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Lowercase (a-z)</span>
-                            </label>
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-numbers" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Numbers (0-9)</span>
-                            </label>
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-symbols" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Special Symbols</span>
-                            </label>
-                        </div>
-
-                        <!-- PASSPHRASE CONTROLS -->
-                        <div class="passphrase-toggles-grid hidden" id="phrase-controls-group">
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-sep" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Dash Separator (-)</span>
-                            </label>
-                            <label class="switch-container">
-                                <input type="checkbox" id="gen-cap" checked>
-                                <span class="switch-slider"></span>
-                                <span class="switch-lbl">Title Case Words</span>
-                            </label>
                         </div>
                     </div>
+                </section>
 
-                    <button class="generate-trigger-btn" id="generate-trigger">
-                        <span>RE-ARCHITECT SYSTEM ACCESS TOKEN</span>
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                    </button>
-                </div>
-            </section>
+                <!-- Right panel: Rig control deck -->
+                <section class="grid-card cracking-controls-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // HARDWARE DECK</span>
+                            <h2>Rig Configuration</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="control-row">
+                            <label class="control-label">Select Attack Strategy Mode:</label>
+                            <div class="attack-mode-grid">
+                                <div class="attack-mode-cell active" data-mode="brute">
+                                    <span class="mode-cell-title">BRUTE FORCE</span>
+                                    <span class="mode-cell-desc">Keyspace Traversal</span>
+                                </div>
+                                <div class="attack-mode-cell" data-mode="dict">
+                                    <span class="mode-cell-title">DICTIONARY EXPLOIT</span>
+                                    <span class="mode-cell-desc">Database Lookup</span>
+                                </div>
+                                <div class="attack-mode-cell" data-mode="hybrid">
+                                    <span class="mode-cell-title">HYBRID MUTATOR</span>
+                                    <span class="mode-cell-desc">Leet Speak & Rules</span>
+                                </div>
+                            </div>
+                        </div>
 
-            <!-- SESSION AUDIT LOG -->
-            <section class="grid-card audit-card glass-panel" id="audit-section">
-                <div class="card-header">
-                    <div class="header-title-block">
-                        <span class="header-tag">05 // SECURE SESSION REGISTER</span>
-                        <h2>Local Audit Log</h2>
+                        <div class="control-row">
+                            <label class="control-label">Select Attack Rig Profile:</label>
+                            <div class="rig-deck-grid">
+                                <div class="rig-select-cell active" data-speed="150000" data-name="Standard Smartphone">
+                                    <span class="rig-cell-title">SMARTPHONE</span>
+                                    <span class="rig-cell-speed">1.5 × 10⁵ /s</span>
+                                </div>
+                                <div class="rig-select-cell" data-speed="25000000000" data-name="8x RTX 4090 Cluster Rig">
+                                    <span class="rig-cell-title">RTX 4090 CLUSTER</span>
+                                    <span class="rig-cell-speed">2.5 × 10¹⁰ /s</span>
+                                </div>
+                                <div class="rig-select-cell" data-speed="8000000000000" data-name="Government Quantum-Supercomputer">
+                                    <span class="rig-cell-title">SUPERCOMPUTER</span>
+                                    <span class="rig-cell-speed">8.0 × 10¹² /s</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="crack-stats-hud glass-inset">
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">TARGET PASSWORD:</span>
+                                <span class="stat-hud-value text-glowing" id="crack-target-password">NONE</span>
+                            </div>
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">GUESS SPEED:</span>
+                                <span class="stat-hud-value text-glowing" id="crack-active-speed">150,000 /s</span>
+                            </div>
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">TIME ELAPSED:</span>
+                                <span class="stat-hud-value" id="crack-time-elapsed">0.00s</span>
+                            </div>
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">EST. TIME REMAINING:</span>
+                                <span class="stat-hud-value" id="crack-time-remaining">N/A</span>
+                            </div>
+                        </div>
+
+                        <button class="generate-trigger-btn" id="start-crack-btn">
+                            <span>INITIALIZE BRUTE-FORCE SIMULATOR</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                        </button>
                     </div>
-                    <button class="clear-btn" id="clear-audit-btn">CLEAR MEMORY</button>
-                </div>
-                <div class="card-body">
-                    <div class="audit-list" id="audit-list-box">
-                        <div class="audit-empty">No active security records checked in this session.</div>
+                </section>
+
+            </div>
+
+            <!-- VIEW 3: BIOMETRIC AUDIT (KEYSTROKE TIMING PROFILES) -->
+            <div id="view-biometrics" class="view-section hidden dashboard-grid">
+                
+                <!-- Left panel: Keystroke graph canvas -->
+                <section class="grid-card biometrics-visual-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // DYNAMICS GRAPH</span>
+                            <h2>Keystroke Dynamics Rhythm</h2>
+                        </div>
                     </div>
-                </div>
-            </section>
+                    <div class="card-body">
+                        <div class="biometrics-graph-wrapper">
+                            <canvas id="biometrics-canvas"></canvas>
+                        </div>
+                        <div class="graph-legend">
+                            <div class="legend-item"><span class="legend-dot led-fast"></span>Fast (< 100ms)</div>
+                            <div class="legend-item"><span class="legend-dot led-normal"></span>Normal (100-250ms)</div>
+                            <div class="legend-item"><span class="legend-dot led-slow"></span>Slow (> 250ms)</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right panel: Dynamics telemetry -->
+                <section class="grid-card biometrics-stats-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // TELEMETRY REGISTER</span>
+                            <h2>Biometric Profile</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="bio-stats-grid">
+                            <div class="bio-stat-box glass-inset">
+                                <span class="bio-lbl">Avg. Dwell Time</span>
+                                <h3 class="bio-val" id="bio-avg-dwell">0 ms</h3>
+                                <span class="bio-sub">Key hold duration</span>
+                            </div>
+                            <div class="bio-stat-box glass-inset">
+                                <span class="bio-lbl">Avg. Flight Time</span>
+                                <h3 class="bio-val" id="bio-avg-flight">0 ms</h3>
+                                <span class="bio-sub">Key interval latency</span>
+                            </div>
+                        </div>
+
+                        <div class="bio-audit-hud glass-inset">
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">RHYTHM QUALITY:</span>
+                                <span class="stat-hud-value text-glowing" id="bio-rhythm-quality">WAITING FOR INPUT</span>
+                            </div>
+                            <div class="stat-hud-row">
+                                <span class="stat-hud-label">BIOMETRIC SIGNATURE:</span>
+                                <span class="stat-hud-value signature-text" id="bio-signature-hash">NO INPUT SIGNATURE RECORDED</span>
+                            </div>
+                        </div>
+
+                        <!-- Interactive Vault Simulator -->
+                        <div class="vault-simulator glass-inset">
+                            <div class="vault-header">
+                                <span class="vault-tag">CRYPTO LOCKER SYSTEM</span>
+                                <h4>Biometric Rhythm Vault</h4>
+                            </div>
+                            <div class="vault-body">
+                                <div class="vault-hologram-wrapper">
+                                    <div class="vault-hologram" id="vault-lock-visual">
+                                        <svg viewBox="0 0 24 24" class="lock-svg">
+                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" class="lock-body"/>
+                                            <path d="M7 11V7a5 5 0 0 1 10 0v4" class="lock-shackle"/>
+                                        </svg>
+                                        <span class="vault-status-text" id="vault-status-text">SYSTEM ARMED // LOCKED</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="vault-controls">
+                                    <div class="vault-mode-switch">
+                                        <button type="button" class="vault-tab-btn active" id="btn-vault-enroll">1. ENROLL PROFILE</button>
+                                        <button type="button" class="vault-tab-btn" id="btn-vault-verify" disabled>2. UNLOCK VAULT</button>
+                                    </div>
+                                    
+                                    <div class="vault-action-panel">
+                                        <div class="vault-instruction-text" id="vault-instructions">
+                                            Click "START RHYTHM TRAINING" to begin profile enrollment.
+                                        </div>
+                                        
+                                        <div class="vault-input-group">
+                                            <input type="password" id="vault-input" placeholder="Enrollment inactive..." disabled spellcheck="false" autocomplete="off">
+                                            <div class="enroll-leds">
+                                                <span class="enroll-dot" id="led-pass-1"></span>
+                                                <span class="enroll-dot" id="led-pass-2"></span>
+                                                <span class="enroll-dot" id="led-pass-3"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <button type="button" class="vault-trigger-btn" id="vault-control-btn">
+                                            START RHYTHM TRAINING
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- VIEW 4: DICTIONARY LEDGER (BLOOM FILTER LOCAL CHECKING) -->
+            <div id="view-dictionary" class="view-section hidden dashboard-grid">
+                
+                <!-- Left panel: Bloom Filter bit mapping visualizer -->
+                <section class="grid-card bloom-visual-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // HASH MAPPING</span>
+                            <h2>Bloom Filter Bit Array Visualizer</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="bloom-grid-container">
+                            <div class="bloom-bit-grid" id="bloom-bit-array">
+                                <!-- Uint8 bits will render dynamically as glowing dots -->
+                            </div>
+                        </div>
+                        <div class="bloom-stats-summary">
+                            <span>Bit Array Size: <strong>1024 Bits</strong></span>
+                            <span>Optimal Hashes: <strong>4 Functions</strong></span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Right panel: Local dictionary ledger status -->
+                <section class="grid-card bloom-ledger-card glass-panel">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // OFFLINE LEDGER</span>
+                            <h2>Vulnerability Test Log</h2>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="ledger-display glass-inset" id="ledger-display-box">
+                            <div class="console-line system-line">Bloom Filter active. 300+ vulnerable passwords loaded.</div>
+                        </div>
+                        <div class="bloom-instructions">
+                            <p>A Bloom Filter is a space-efficient data structure for testing set membership. This local database ledger tests if your password exists in the list of most common vulnerable passwords instantly offline using FNV-1a hashing algorithms.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Bottom panel: Cryptographic Hash Laboratory -->
+                <section class="grid-card hash-lab-card glass-panel" id="hash-lab-section">
+                    <div class="card-header">
+                        <div class="header-title-block">
+                            <span class="header-tag">SYS // CRYPTOGRAPHIC RESEARCH</span>
+                            <h2>Multi-Algorithm Cryptographic Hash Laboratory</h2>
+                        </div>
+                    </div>
+                    <div class="card-body hash-lab-layout">
+                        <div class="hash-controls">
+                            <div class="salt-input-wrapper glass-inset">
+                                <label for="salt-input">Cryptographic Salt (Appended to Password):</label>
+                                <div class="salt-row">
+                                    <input type="text" id="salt-input" placeholder="Enter salt or generate..." spellcheck="false" autocomplete="off">
+                                    <button type="button" class="toggle-3d-btn" id="generate-salt-btn">GENERATE SALT</button>
+                                </div>
+                            </div>
+                            <div class="hash-explanation-box">
+                                <p>🔒 **Salting & Hardness**: Adding a unique salt protects passwords from **rainbow table attacks** (precomputed hash databases). While SHA-256 is fast, modern password databases use key-stretching functions like **Argon2** or **PBKDF2** which execute thousands of iterations to slow down hardware rig cracking times.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="hash-outputs-grid">
+                            <div class="hash-row-output glass-inset" data-strength="unsafe">
+                                <div class="hash-meta">
+                                    <span class="hash-name">MD5</span>
+                                    <span class="hash-tag level-critical">CRITICAL // UNSAFE</span>
+                                </div>
+                                <div class="hash-string-box">
+                                    <span class="hash-value-text" id="hash-md5">d41d8cd98f00b204e9800998ecf8427e</span>
+                                    <button class="hash-copy-btn" data-target="hash-md5" aria-label="Copy MD5 hash">COPY</button>
+                                </div>
+                            </div>
+                            <div class="hash-row-output glass-inset" data-strength="unsafe">
+                                <div class="hash-meta">
+                                    <span class="hash-name">SHA-1</span>
+                                    <span class="hash-tag level-danger">HIGH // VULNERABLE</span>
+                                </div>
+                                <div class="hash-string-box">
+                                    <span class="hash-value-text" id="hash-sha1">da39a3ee5e6b4b0d3255bfef95601890afd80709</span>
+                                    <button class="hash-copy-btn" data-target="hash-sha1" aria-label="Copy SHA-1 hash">COPY</button>
+                                </div>
+                            </div>
+                            <div class="hash-row-output glass-inset" data-strength="safe">
+                                <div class="hash-meta">
+                                    <span class="hash-name">SHA-256</span>
+                                    <span class="hash-tag level-safe">SECURE // STANDARD</span>
+                                </div>
+                                <div class="hash-string-box">
+                                    <span class="hash-value-text" id="hash-sha256">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+                                    <button class="hash-copy-btn" data-target="hash-sha256" aria-label="Copy SHA-256 hash">COPY</button>
+                                </div>
+                            </div>
+                            <div class="hash-row-output glass-inset" data-strength="safe">
+                                <div class="hash-meta">
+                                    <span class="hash-name">SHA-512</span>
+                                    <span class="hash-tag level-fortified">FORTIFIED // HARDENED</span>
+                                </div>
+                                <div class="hash-string-box">
+                                    <span class="hash-value-text" id="hash-sha512">cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e</span>
+                                    <button class="hash-copy-btn" data-target="hash-sha512" aria-label="Copy SHA-512 hash">COPY</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
 
         <!-- FOOTER -->
